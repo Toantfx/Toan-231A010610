@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bài tập 3: Đồng hồ đếm ngược</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .timer-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .timer-display {
+            text-align: center;
+            margin: 30px 0;
+        }
+        
+        .time-circle {
+            width: 300px;
+            height: 300px;
+            margin: 0 auto;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        
+        .time-text {
+            font-size: 4rem;
+            font-weight: bold;
+            font-family: 'Courier New', monospace;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .time-label {
+            font-size: 1.2rem;
+            margin-top: 10px;
+            opacity: 0.9;
+        }
+        
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 30px 0;
+            flex-wrap: wrap;
+        }
+        
+        .control-btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .start-btn {
+            background: #2ecc71;
+            color: white;
+        }
+        
+        .start-btn:hover {
+            background: #27ae60;
+            transform: translateY(-2px);
+        }
+        
+        .pause-btn {
+            background: #f39c12;
+            color: white;
+        }
+        
+        .pause-btn:hover {
+            background: #d68910;
+            transform: translateY(-2px);
+        }
+        
+        .reset-btn {
+            background: #e74c3c;
+            color: white;
+        }
+        
+        .reset-btn:hover {
+            background: #c0392b;
+            transform: translateY(-2px);
+        }
+        
+        .add-time-btn {
+            background: #3498db;
+            color: white;
+        }
+        
+        .add-time-btn:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+        }
+        
+        .warning {
+            animation: pulse 1s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(231, 76, 60, 0.7); }
+            70% { box-shadow: 0 0 0 15px rgba(231, 76, 60, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(231, 76, 60, 0); }
+        }
+        
+        .danger {
+            animation: dangerPulse 0.5s infinite;
+        }
+        
+        @keyframes dangerPulse {
+            0% { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+            50% { background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%); }
+            100% { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        }
+        
+        .progress-ring {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            pointer-events: none;
+        }
+        
+        .progress-ring-circle {
+            fill: none;
+            stroke: white;
+            stroke-width: 8;
+            stroke-linecap: round;
+            transform: rotate(-90deg);
+            transform-origin: 50% 50%;
+            transition: stroke-dashoffset 1s linear;
+        }
+        
+        .time-options {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+        
+        .time-option {
+            padding: 8px 15px;
+            background: #f8f9fa;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        
+        .time-option:hover {
+            background: #e9ecef;
+        }
+        
+        .time-option.active {
+            background: #3498db;
+            color: white;
+            border-color: #3498db;
+        }
+        
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal-content {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            text-align: center;
+            max-width: 500px;
+            width: 90%;
+            animation: modalAppear 0.5s ease;
+        }
+        
+        @keyframes modalAppear {
+            from {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+        
+        .modal-content h2 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            font-size: 2rem;
+        }
+        
+        .modal-content p {
+            margin-bottom: 30px;
+            font-size: 1.1rem;
+            color: #666;
+        }
+        
+        .modal-btn {
+            padding: 12px 30px;
+            background: #3498db;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        
+        .logic-explanation {
+            margin-top: 50px;
+            padding: 30px;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+        
+        @media (max-width: 768px) {
+            .time-circle {
+                width: 250px;
+                height: 250px;
+            }
+            
+            .time-text {
+                font-size: 3rem;
+            }
+            
+            .controls {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .control-btn {
+                width: 100%;
+                max-width: 300px;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <nav class="main-menu">
+            <a href="baitap02.html" class="menu-link">← Bài tập 2</a>
+            <a href="index.html" class="menu-link">Trang chủ</a>
+            <a href="https://toantfx.github.io/baitap14.html-" class="menu-link" target="_blank">Bài 14: Memory Game</a>
+        </nav>
+
+        <header class="exercise-header">
+            <h1>⏰ Bài tập 3: Đồng hồ đếm ngược</h1>
+            <p class="subtitle">(20 điểm) Countdown timer từ 10 phút</p>
+        </header>
+
+        <main>
+            <div class="timer-container">
+                <!-- Đồng hồ hiển thị -->
+                <div class="timer-display">
+                    <div class="time-circle" id="time-circle">
+                        <div class="time-text" id="time-text">10:00</div>
+                        <div class="time-label">Thời gian còn lại</div>
+                        <svg class="progress-ring" width="300" height="300">
+                            <circle class="progress-ring-circle" 
+                                   cx="150" 
+                                   cy="150" 
+                                   r="140"
+                                   stroke-dasharray="879.2"
+                                   stroke-dashoffset="0">
+                            </circle>
+                        </svg>
+                    </div>
+                </div>
+
+                <!-- Các nút điều khiển -->
+                <div class="controls">
+                    <button class="control-btn start-btn" id="start-btn">
+                        <span>▶️</span> Bắt đầu
+                    </button>
+                    <button class="control-btn pause-btn" id="pause-btn" disabled>
+                        <span>⏸️</span> Tạm dừng
+                    </button>
+                    <button class="control-btn reset-btn" id="reset-btn">
+                        <span>🔄</span> Đặt lại
+                    </button>
+                    <button class="control-btn add-time-btn" id="add-time-btn">
+                        <span>➕</span> Thêm 1 phút
+                    </button>
+                </div>
+
+                <!-- Lựa chọn thời gian nhanh -->
+                <div class="time-options">
+                    <div class="time-option" data-minutes="1">1 phút</div>
+                    <div class="time-option" data-minutes="5">5 phút</div>
+                    <div class="time-option active" data-minutes="10">10 phút</div>
+                    <div class="time-option" data-minutes="15">15 phút</div>
+                    <div class="time-option" data-minutes="30">30 phút</div>
+                </div>
+
+                <!-- Modal hết thời gian -->
+                <div class="modal-overlay" id="modal-overlay">
+                    <div class="modal-content">
+                        <h2>⏰ HẾT THỜI GIAN!</h2>
+                        <p>Đồng hồ đếm ngược đã kết thúc.</p>
+                        <p>Thời gian đã hết 10 phút.</p>
+                        <button class="modal-btn" id="modal-close-btn">OK</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Giải thích logic -->
+            <div class="logic-explanation">
+                <h3>🔧 Logic tư duy và giải thích:</h3>
+                
+                <h4>1. Xử lý interval để tránh memory leak:</h4>
+                <ul>
+                    <li><strong>Clear interval cẩn thận</strong>: Luôn clearInterval() trước khi setInterval mới</li>
+                    <li><strong>Check interval tồn tại</strong>: if (timerInterval) clearInterval(timerInterval)</li>
+                    <li><strong>Component lifecycle</strong>: Clear interval khi component unmount (thêm event listener cho beforeunload)</li>
+                    <li><strong>Pause/resume logic</strong>: Lưu thời gian còn lại khi pause, không chỉ dựa vào interval</li>
+                </ul>
+
+                <h4>2. Tích hợp với Domain/Hosting khi deploy:</h4>
+                <ul>
+                    <li><strong>Đồng bộ thời gian server</strong>: Fetch server time thay vì chỉ dùng Date() của client</li>
+                    <li><strong>Service Worker</strong>: Cache timer logic để hoạt động offline</li>
+                    <li><strong>Timezone handling</strong>: Sử dụng UTC để tránh lệch múi giờ</li>
+                    <li><strong>Background sync</strong>: Đồng bộ trạng thái timer khi mất kết nối</li>
+                </ul>
+
+                <h4>3. Performance optimization:</h4>
+                <ul>
+                    <li><strong>RequestAnimationFrame</strong>: Cho animation mượt mà hơn setInterval</li>
+                    <li><strong>Web Workers</strong>: Xử lý timer trong background thread</li>
+                    <li><strong>Debounced updates</strong>: Chỉ update DOM khi cần thiết</li>
+                    <li><strong>Memory efficient</strong>: Không tạo quá nhiều closure trong interval</li>
+                </ul>
+
+                <h4>4. User Experience:</h4>
+                <ul>
+                    <li>Visual feedback khi thời gian dưới 1 phút</li>
+                    <li>Progress circle hiển thị % thời gian còn lại</li>
+                    <li>Sound notification khi hết giờ (có thể bật/tắt)</li>
+                    <li>Auto-save timer state để tiếp tục sau</li>
+                </ul>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <p>© 2024 Bài kiểm tra LTW - Bài tập 3</p>
+        </footer>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Elements
+            const timeText = document.getElementById('time-text');
+            const timeCircle = document.getElementById('time-circle');
+            const startBtn = document.getElementById('start-btn');
+            const pauseBtn = document.getElementById('pause-btn');
+            const resetBtn = document.getElementById('reset-btn');
+            const addTimeBtn = document.getElementById('add-time-btn');
+            const modalOverlay = document.getElementById('modal-overlay');
+            const modalCloseBtn = document.getElementById('modal-close-btn');
+            const timeOptions = document.querySelectorAll('.time-option');
+            const progressCircle = document.querySelector('.progress-ring-circle');
+            
+            // Timer state
+            let totalSeconds = 10 * 60; // 10 phút
+            let remainingSeconds = totalSeconds;
+            let timerInterval = null;
+            let isRunning = false;
+            const circumference = 2 * Math.PI * 140; // Chu vi hình tròn
+            
+            // Format time as MM:SS
+            function formatTime(seconds) {
+                const minutes = Math.floor(seconds / 60);
+                const secs = seconds % 60;
+                return `${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+            }
+            
+            // Update progress circle
+            function updateProgress() {
+                const progress = remainingSeconds / totalSeconds;
+                const offset = circumference * (1 - progress);
+                progressCircle.style.strokeDashoffset = offset;
+            }
+            
+            // Start timer
+            function startTimer() {
+                if (isRunning) return;
+                
+                isRunning = true;
+                startBtn.disabled = true;
+                pauseBtn.disabled = false;
+                
+                // Clear any existing interval to prevent memory leak
+                if (timerInterval) {
+                    clearInterval(timerInterval);
+                }
+                
+                timerInterval = setInterval(() => {
+                    if (remainingSeconds <= 0) {
+                        clearInterval(timerInterval);
+                        timerComplete();
+                        return;
+                    }
+                    
+                    remainingSeconds--;
+                    updateDisplay();
+                    
+                    // Visual feedback when less than 1 minute
+                    if (remainingSeconds <= 60) {
+                        timeCircle.classList.add('warning');
+                    }
+                    
+                    if (remainingSeconds <= 30) {
+                        timeCircle.classList.add('danger');
+                    }
+                }, 1000);
+            }
+            
+            // Pause timer
+            function pauseTimer() {
+                if (!isRunning) return;
+                
+                isRunning = false;
+                startBtn.disabled = false;
+                pauseBtn.disabled = true;
+                
+                clearInterval(timerInterval);
+                timerInterval = null;
+            }
+            
+            // Reset timer
+            function resetTimer() {
+                pauseTimer();
+                remainingSeconds = totalSeconds;
+                updateDisplay();
+                timeCircle.classList.remove('warning', 'danger');
+            }
+            
+            // Add 1 minute
+            function addOneMinute() {
+                if (isRunning) {
+                    remainingSeconds += 60;
+                    totalSeconds += 60;
+                    updateDisplay();
+                }
+            }
+            
+            // Update display
+            function updateDisplay() {
+                timeText.textContent = formatTime(remainingSeconds);
+                updateProgress();
+            }
+            
+            // Timer complete
+            function timerComplete() {
+                isRunning = false;
+                startBtn.disabled = false;
+                pauseBtn.disabled = true;
+                
+                // Show modal
+                modalOverlay.style.display = 'flex';
+                
+                // Add sound notification (in a real app)
+                try {
+                    // This would be a proper sound file in production
+                    console.log('Timer complete! Play sound notification.');
+                } catch (error) {
+                    console.error('Error playing sound:', error);
+                }
+            }
+            
+            // Event Listeners
+            startBtn.addEventListener('click', startTimer);
+            pauseBtn.addEventListener('click', pauseTimer);
+            resetBtn.addEventListener('click', resetTimer);
+            addTimeBtn.addEventListener('click', addOneMinute);
+            modalCloseBtn.addEventListener('click', () => {
+                modalOverlay.style.display = 'none';
+            });
+            
+            // Time options
+            timeOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    // Remove active class from all options
+                    timeOptions.forEach(opt => opt.classList.remove('active'));
+                    
+                    // Add active class to clicked option
+                    this.classList.add('active');
+                    
+                    // Update timer
+                    const minutes = parseInt(this.dataset.minutes);
+                    totalSeconds = minutes * 60;
+                    resetTimer();
+                });
+            });
+            
+            // Handle browser tab visibility change
+            document.addEventListener('visibilitychange', function() {
+                if (document.hidden && isRunning) {
+                    // Save current time when tab becomes hidden
+                    localStorage.setItem('countdownPausedTime', Date.now());
+                    localStorage.setItem('countdownRemaining', remainingSeconds);
+                } else if (!document.hidden && isRunning) {
+                    // Restore time when tab becomes visible
+                    const pausedTime = localStorage.getItem('countdownPausedTime');
+                    if (pausedTime) {
+                        const timeDiff = Math.floor((Date.now() - pausedTime) / 1000);
+                        remainingSeconds = Math.max(0, remainingSeconds - timeDiff);
+                        updateDisplay();
+                        
+                        if (remainingSeconds <= 0) {
+                            timerComplete();
+                        }
+                    }
+                }
+            });
+            
+            // Clear interval on page unload to prevent memory leak
+            window.addEventListener('beforeunload', function() {
+                if (timerInterval) {
+                    clearInterval(timerInterval);
+                }
+                
+                // Save state for later restoration
+                if (isRunning) {
+                    localStorage.setItem('countdownState', JSON.stringify({
+                        remaining: remainingSeconds,
+                        total: totalSeconds,
+                        timestamp: Date.now()
+                    }));
+                } else {
+                    localStorage.removeItem('countdownState');
+                }
+            });
+            
+            // Try to restore timer state
+            try {
+                const savedState = localStorage.getItem('countdownState');
+                if (savedState) {
+                    const state = JSON.parse(savedState);
+                    const timeDiff = Math.floor((Date.now() - state.timestamp) / 1000);
+                    totalSeconds = state.total;
+                    remainingSeconds = Math.max(0, state.remaining - timeDiff);
+                    updateDisplay();
+                    
+                    if (remainingSeconds <= 0) {
+                        remainingSeconds = totalSeconds;
+                    }
+                    
+                    localStorage.removeItem('countdownState');
+                }
+            } catch (error) {
+                console.error('Error restoring timer state:', error);
+            }
+            
+            // Initial display
+            updateDisplay();
+        });
+    </script>
+</body>
+</html>

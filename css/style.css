@@ -1,0 +1,493 @@
+/* File: css/style.css */
+/* Reset và font chữ */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background: linear-gradient(135deg, #E3F2FD 0%, #F3E5F5 100%);
+    color: #333;
+    line-height: 1.6;
+    min-height: 100vh;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Header với palette  - Tông hồng cam */
+.header {
+    background: linear-gradient(90deg, #FF6B6B 0%, #FF8E53 100%);
+    color: white;
+    padding: 25px 30px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(255, 107, 107, 0.2);
+    margin-bottom: 25px;
+    position: relative;
+    overflow: hidden;
+}
+
+.header::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -50%;
+    width: 200px;
+    height: 200px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+}
+
+.profile {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+    position: relative;
+    z-index: 1;
+}
+
+.avatar {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 5px solid white;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease;
+}
+
+.avatar:hover {
+    transform: scale(1.05);
+}
+
+.profile-info h1 {
+    font-size: 2.2rem;
+    margin-bottom: 8px;
+    color: white;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.profile-info p {
+    font-size: 1.1rem;
+    color: rgba(255, 255, 255, 0.9);
+    margin-bottom: 5px;
+}
+
+/* Menu chính - Tông xanh lá */
+.main-menu {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    background: white;
+    padding: 15px;
+    border-radius: 15px;
+    margin-bottom: 30px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+    border: 2px solid #4CAF50;
+}
+
+.menu-link {
+    padding: 12px 24px;
+    text-decoration: none;
+    color: #2E7D32;
+    font-weight: 600;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+    background: #E8F5E9;
+    border: 2px solid transparent;
+    position: relative;
+    overflow: hidden;
+}
+
+.menu-link::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(76, 175, 80, 0.2), transparent);
+    transition: left 0.5s;
+}
+
+.menu-link:hover::before {
+    left: 100%;
+}
+
+.menu-link:hover {
+    background: #4CAF50;
+    color: white;
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(76, 175, 80, 0.3);
+    border-color: #4CAF50;
+}
+
+.menu-link.active {
+    background: #FF9800;
+    color: white;
+    box-shadow: 0 4px 12px rgba(255, 152, 0, 0.4);
+    border-color: #FF9800;
+}
+
+/* Nội dung chính */
+.main-content {
+    background: white;
+    padding: 35px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    margin-bottom: 30px;
+}
+
+/* Phần lý thuyết */
+.theory-section h1 {
+    color: #D32F2F;
+    margin-bottom: 30px;
+    padding-bottom: 15px;
+    border-bottom: 3px solid #FF9800;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    font-size: 1.8rem;
+}
+
+.icon {
+    font-size: 1.8rem;
+    background: #FFEBEE;
+    padding: 10px;
+    border-radius: 50%;
+}
+
+.question {
+    margin-bottom: 30px;
+    padding: 25px;
+    background: linear-gradient(135deg, #FFF8E1 0%, #FFECB3 100%);
+    border-radius: 15px;
+    border-left: 6px solid #FF9800;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
+}
+
+.question:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(255, 152, 0, 0.15);
+}
+
+.question h2 {
+    color: #5D4037;
+    margin-bottom: 20px;
+    font-size: 1.4rem;
+    line-height: 1.4;
+}
+
+.answer {
+    padding: 20px;
+    background: white;
+    border-radius: 12px;
+    line-height: 1.8;
+    border: 2px solid #FFF3E0;
+}
+
+.answer h3 {
+    color: #E65100;
+    margin: 20px 0 15px;
+    font-size: 1.2rem;
+    padding-bottom: 8px;
+    border-bottom: 2px solid #FFCC80;
+}
+
+.answer ul, .answer ol {
+    margin: 10px 0 10px 25px;
+}
+
+.answer li {
+    margin-bottom: 10px;
+    color: #5D4037;
+    padding-left: 5px;
+}
+
+.answer li strong {
+    color: #D84315;
+}
+
+.code-example {
+    background: linear-gradient(135deg, #263238 0%, #37474F 100%);
+    color: #E0E0E0;
+    padding: 20px;
+    border-radius: 12px;
+    margin: 20px 0;
+    font-family: 'Cascadia Code', 'Consolas', monospace;
+    overflow-x: auto;
+    font-size: 0.95rem;
+    border: 1px solid #546E7A;
+}
+
+.code-example pre {
+    margin: 0;
+    white-space: pre-wrap;
+    line-height: 1.5;
+}
+
+.code-example code {
+    color: #80CBC4;
+}
+
+.comparison-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    margin: 20px 0;
+    font-size: 0.95rem;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.comparison-table th {
+    background: linear-gradient(135deg, #2196F3 0%, #1976D2 100%);
+    color: white;
+    padding: 15px;
+    text-align: left;
+    font-weight: 600;
+    border-bottom: 3px solid #0D47A1;
+}
+
+.comparison-table td {
+    padding: 15px;
+    border: 1px solid #E0E0E0;
+    color: #424242;
+}
+
+.comparison-table tr:nth-child(even) {
+    background: #F5F5F5;
+}
+
+.comparison-table tr:nth-child(odd) {
+    background: white;
+}
+
+.comparison-table tr:hover {
+    background: #E3F2FD;
+}
+
+/* Phần bài tập thực hành */
+.practice-links {
+    margin-top: 50px;
+    padding-top: 30px;
+    border-top: 3px dashed #FF9800;
+}
+
+.practice-links h1 {
+    color: #388E3C;
+    margin-bottom: 30px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    font-size: 1.8rem;
+}
+
+.exercise-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 25px;
+    margin-top: 25px;
+}
+
+.exercise-card {
+    display: block;
+    text-decoration: none;
+    padding: 30px 25px;
+    background: linear-gradient(135deg, #E8F5E9 0%, #C8E6C9 100%);
+    border-radius: 15px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    transition: all 0.4s ease;
+    text-align: center;
+    border: 3px solid transparent;
+    position: relative;
+    overflow: hidden;
+}
+
+.exercise-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 5px;
+    background: linear-gradient(90deg, #4CAF50, #8BC34A);
+}
+
+.exercise-card:hover {
+    transform: translateY(-10px) scale(1.02);
+    box-shadow: 0 15px 35px rgba(76, 175, 80, 0.25);
+    border-color: #4CAF50;
+    background: linear-gradient(135deg, #C8E6C9 0%, #A5D6A7 100%);
+}
+
+.exercise-icon {
+    font-size: 3.5rem;
+    margin-bottom: 20px;
+    display: inline-block;
+    background: white;
+    width: 80px;
+    height: 80px;
+    line-height: 80px;
+    border-radius: 50%;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.exercise-card:hover .exercise-icon {
+    transform: rotate(10deg) scale(1.1);
+}
+
+.exercise-card h3 {
+    color: #1B5E20;
+    margin-bottom: 15px;
+    font-size: 1.4rem;
+}
+
+.exercise-card p {
+    color: #4E342E;
+    margin-bottom: 20px;
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+
+.points {
+    display: inline-block;
+    padding: 8px 20px;
+    background: linear-gradient(135deg, #FF9800 0%, #F57C00 100%);
+    color: white;
+    border-radius: 25px;
+    font-weight: bold;
+    font-size: 0.9rem;
+    box-shadow: 0 4px 10px rgba(255, 152, 0, 0.3);
+}
+
+/* Footer - Tông tím */
+.footer {
+    margin-top: 40px;
+    padding: 25px;
+    background: linear-gradient(90deg, #7B1FA2 0%, #512DA8 100%);
+    border-radius: 15px;
+    text-align: center;
+    color: white;
+    box-shadow: 0 5px 20px rgba(123, 31, 162, 0.2);
+}
+
+.footer p {
+    margin-bottom: 10px;
+    font-size: 1rem;
+    opacity: 0.9;
+}
+
+.footer p:last-child {
+    margin-bottom: 0;
+    font-weight: 600;
+    color: #FFD54F;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .container {
+        padding: 15px;
+    }
+    
+    .profile {
+        flex-direction: column;
+        text-align: center;
+        gap: 20px;
+    }
+    
+    .main-menu {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+    }
+    
+    .menu-link {
+        width: 100%;
+        text-align: center;
+    }
+    
+    .exercise-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    
+    .question {
+        padding: 20px;
+    }
+    
+    .main-content {
+        padding: 25px;
+    }
+    
+    .header {
+        padding: 20px;
+    }
+    
+    .profile-info h1 {
+        font-size: 1.8rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .theory-section h1,
+    .practice-links h1 {
+        font-size: 1.4rem;
+    }
+    
+    .question h2 {
+        font-size: 1.1rem;
+    }
+    
+    .code-example {
+        font-size: 0.8rem;
+        padding: 15px;
+    }
+    
+    .comparison-table {
+        font-size: 0.8rem;
+    }
+    
+    .comparison-table th,
+    .comparison-table td {
+        padding: 10px 8px;
+    }
+    
+    .exercise-card {
+        padding: 25px 20px;
+    }
+}
+
+/* Animation cho icon */
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+.exercise-icon {
+    animation: float 3s ease-in-out infinite;
+}
+
+/* Hiệu ứng cho code block */
+.code-example pre {
+    position: relative;
+}
+
+.code-example pre::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    background: #FF9800;
+    border-radius: 2px;
+}

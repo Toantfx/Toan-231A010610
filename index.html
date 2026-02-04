@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bài Kiểm Tra LTW</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header với avatar -->
+        <header class="header">
+            <div class="profile">
+                <img src="images/avatar.jpg" alt="Avatar" class="avatar">
+                <div class="profile-info">
+                    <h1>Đào Văn Toàn</h1>
+                    <p>MSSV: 231A010610</p>
+                    <p>Môn: Lập trình Web </p>
+                </div>
+            </div>
+        </header>
+
+        <!-- Menu chính -->
+        <nav class="main-menu">
+            <a href="index.html" class="menu-link active">Trang chủ</a>
+            <a href="baitap01.html" class="menu-link">Bài tập 1</a>
+            <a href="baitap02.html" class="menu-link">Bài tập 2</a>
+            <a href="baitap03.html" class="menu-link">Bài tập 3</a>
+            <a href="https://toantfx.github.io/baitap14.html-" class="menu-link" target="_blank">Bài 14: Memory Game</a>
+            <a href="about.html" class="menu-link">Giới thiệu</a>
+            <a href="contact.html" class="menu-link">Liên hệ</a>
+        </nav>
+
+        <!-- Nội dung chính -->
+        <main class="main-content">
+            <!-- Phần Lý thuyết -->
+            <section class="theory-section">
+                <h1><i class="icon">📚</i> Phần 1: Lý thuyết (40 điểm)</h1>
+                
+                <div class="question">
+                    <h2>1. (10 điểm) Giải thích sự khác biệt giữa position: absolute và position: relative trong CSS</h2>
+                    <div class="answer">
+                        <h3>Khác biệt chính:</h3>
+                        <ul>
+                            <li><strong>position: relative</strong>: Phần tử được định vị tương đối so với vị trí ban đầu của nó. Có thể sử dụng top, right, bottom, left để dịch chuyển nhưng vẫn giữ không gian ban đầu trong luồng tài liệu.</li>
+                            <li><strong>position: absolute</strong>: Phần tử được định vị tuyệt đối so với phần tử cha gần nhất có position khác static (hoặc so với document). Phần tử bị xóa khỏi luồng tài liệu thông thường.</li>
+                        </ul>
+                        
+                        <h3>Ví dụ responsive layout:</h3>
+                        <div class="code-example">
+                            <pre><code>/* relative: tạo container cho absolute */
+.container {
+    position: relative;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* absolute: menu dropdown responsive */
+.dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+}
+
+@media (max-width: 768px) {
+    .dropdown {
+        position: static;
+        width: auto;
+    }
+}</code></pre>
+                        </div>
+                        
+                        <h3>Ảnh hưởng đến deploy:</h3>
+                        <p>Khi deploy trên các thiết bị khác nhau:</p>
+                        <ul>
+                            <li><strong>relative</strong>: An toàn hơn cho responsive, ít bị vỡ layout</li>
+                            <li><strong>absolute</strong>: Cần kiểm tra kỹ trên mobile, dễ bị tràn khung nếu cha không được định vị đúng</li>
+                            <li>Luôn test trên nhiều kích thước màn hình và sử dụng media queries để điều chỉnh</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <h2>2. (10 điểm) Quy trình đăng ký domain và cấu hình hosting</h2>
+                    <div class="answer">
+                        <h3>Quy trình đăng ký domain & hosting:</h3>
+                        <ol>
+                            <li>Chọn nhà cung cấp (GoDaddy, Namecheap, etc.)</li>
+                            <li>Kiểm tra và đăng ký tên miền</li>
+                            <li>Mua hosting package phù hợp</li>
+                            <li>Cấu hình DNS: trỏ tên miền về server hosting</li>
+                            <li>Upload website files lên hosting (FTP/cPanel)</li>
+                            <li>Kiểm tra website hoạt động</li>
+                        </ol>
+                        
+                        <h3>Vai trò của DNS:</h3>
+                        <p>DNS (Domain Name System) chuyển đổi tên miền (ví dụ: example.com) thành địa chỉ IP của server. Quá trình này gọi là "DNS resolution".</p>
+                        
+                        <h3>Công cụ deploy không cần server:</h3>
+                        <ul>
+                            <li><strong>GitHub Pages</strong>: Miễn phí cho static site, tích hợp với Git</li>
+                            <li><strong>Netlify</strong>: CI/CD tự động, hỗ trợ form, functions</li>
+                            <li><strong>Vercel</strong>: Tối ưu cho frontend, deploy nhanh</li>
+                        </ul>
+                        
+                        <h3>Rủi ro bảo mật:</h3>
+                        <ul>
+                            <li>DNS không được cấu hình đúng → website không truy cập được</li>
+                            <li>SSL/TLS không cài đặt → dữ liệu không mã hóa</li>
+                            <li>File cấu hình (.htaccess, .env) không bảo vệ → lộ thông tin nhạy cảm</li>
+                            <li>Không có firewall → dễ bị DDoS attack</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <h2>3. (10 điểm) So sánh let, const và var trong JavaScript</h2>
+                    <div class="answer">
+                        <h3>So sánh scope và hoisting:</h3>
+                        <table class="comparison-table">
+                            <tr>
+                                <th>Keyword</th>
+                                <th>Scope</th>
+                                <th>Hoisting</th>
+                                <th>Reassign</th>
+                                <th>Redeclare</th>
+                            </tr>
+                            <tr>
+                                <td>var</td>
+                                <td>Function scope</td>
+                                <td>Hoisted và initialized với undefined</td>
+                                <td>Có</td>
+                                <td>Có</td>
+                            </tr>
+                            <tr>
+                                <td>let</td>
+                                <td>Block scope</td>
+                                <td>Hoisted nhưng không initialized (TDZ)</td>
+                                <td>Có</td>
+                                <td>Không</td>
+                            </tr>
+                            <tr>
+                                <td>const</td>
+                                <td>Block scope</td>
+                                <td>Hoisted nhưng không initialized (TDZ)</td>
+                                <td>Không (cho giá trị primitive)</td>
+                                <td>Không</td>
+                            </tr>
+                        </table>
+                        
+                        <h3>Ví dụ lỗi thường gặp:</h3>
+                        <div class="code-example">
+                            <pre><code>// Lỗi 1: Sử dụng var trong vòng lặp
+for (var i = 0; i < 3; i++) {
+    setTimeout(() => console.log(i), 100); // Output: 3, 3, 3
+}
+
+// Lỗi 2: Truy cập const/let trước khi khai báo
+console.log(x); // ReferenceError (TDZ)
+let x = 5;</code></pre>
+                        </div>
+                        
+                        <h3>Cách debug bằng Chrome DevTools:</h3>
+                        <ol>
+                            <li>Mở DevTools (F12) → Tab Sources</li>
+                            <li>Đặt breakpoint tại dòng code nghi ngờ</li>
+                            <li>Sử dụng Scope panel để xem giá trị biến</li>
+                            <li>Watch Expressions để theo dõi biến cụ thể</li>
+                            <li>Console tab để kiểm tra lỗi và log</li>
+                        </ol>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <h2>4. (10 điểm) Event Delegation trong JavaScript</h2>
+                    <div class="answer">
+                        <h3>Khái niệm Event Delegation:</h3>
+                        <p>Là kỹ thuật gắn một event listener lên phần tử cha để xử lý sự kiện cho các phần tử con hiện tại và tương lai. Hoạt động dựa trên bubbling của events.</p>
+                        
+                        <h3>Ví dụ với danh sách động:</h3>
+                        <div class="code-example">
+                            <pre><code>// Thay vì gắn event cho từng item
+// items.forEach(item => item.addEventListener('click', handleClick));
+
+// Sử dụng event delegation
+document.getElementById('list').addEventListener('click', function(e) {
+    if (e.target.classList.contains('item')) {
+        console.log('Clicked item:', e.target.textContent);
+    }
+    
+    // Hoặc kiểm tra tag name
+    if (e.target.tagName === 'LI') {
+        e.target.classList.toggle('selected');
+    }
+});</code></pre>
+                        </div>
+                        
+                        <h3>Lợi ích với HTML/CSS:</h3>
+                        <ul>
+                            <li><strong>Hiệu suất</strong>: Giảm số lượng event listeners</li>
+                            <li><strong>Bộ nhớ</strong>: Tiết kiệm memory, đặc biệt với danh sách lớn</li>
+                            <li><strong>Dynamic content</strong>: Xử lý được element được thêm sau</li>
+                            <li><strong>Clean code</strong>: Code gọn hơn, dễ bảo trì</li>
+                            <li><strong>Tích hợp CSS</strong>: Kết hợp với pseudo-classes như :hover, :active</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Link đến các bài tập thực hành -->
+            <section class="practice-links">
+                <h1><i class="icon">💻</i> Phần 2: Bài tập thực hành (60 điểm)</h1>
+                <div class="exercise-grid">
+                    <a href="baitap01.html" class="exercise-card">
+                        <div class="exercise-icon">🛒</div>
+                        <h3>Bài tập 1</h3>
+                        <p>Danh sách sản phẩm + Tìm kiếm</p>
+                        <span class="points">20 điểm</span>
+                    </a>
+                    
+                    <a href="baitap02.html" class="exercise-card">
+                        <div class="exercise-icon">📝</div>
+                        <h3>Bài tập 2</h3>
+                        <p>Form đăng ký người dùng</p>
+                        <span class="points">20 điểm</span>
+                    </a>
+                    
+                    <a href="baitap03.html" class="exercise-card">
+                        <div class="exercise-icon">⏰</div>
+                        <h3>Bài tập 3</h3>
+                        <p>Đồng hồ đếm ngược</p>
+                        <span class="points">20 điểm</span>
+                    </a>
+                    
+                    <a href="https://toantfx.github.io/baitap14.html-" class="exercise-card" target="_blank">
+                        <div class="exercise-icon">🎮</div>
+                        <h3>Bài tập 14</h3>
+                        <p>Memory Card Game</p>
+                        <span class="points">Đã hoàn thành</span>
+                    </a>
+                </div>
+            </section>
+        </main>
+
+        <footer class="footer">
+            <p>© 2026 Bài kiểm tra LTW - MSSV: 213A010610</p>
+            <p>Thời gian nộp: 04/02/2026</p>
+        </footer>
+    </div>
+
+    <script src="js/script.js"></script>
+</body>
+</html>
